@@ -239,7 +239,7 @@ Angelforged Leather - Gravemantle - Abyssal Hide - Shadowhide -
 Voidleather
 
 **Very Rare** - Radiatite - Chromatite - Nanom - Starlight Leather -
-Soulweave - Dragonfire Leather - Phantomhide - Formsteel - Aetherium
+Soulweave - Dragonfire Leather - Formsteel - Aetherium
 
 **Legendary** - Lifewood - Asterwood - Chronocalcite / Tempus Steel -
 Meteoricite / Astral Iron - Fateskin - Elderbeast Hide
@@ -1501,9 +1501,6 @@ known to have been explicitly approved.
 
   Dragonfire       Very Rare                           +8 Provisional; draconic
   Leather                                                 elemental treatment
-
-  Phantomhide      Very Rare                           +9 Provisional; ethereal
-                                                          processing
 
   Formsteel        Very Rare                      Unknown Rarity confirmed in
                                                           memory; process and
