@@ -106,6 +106,16 @@ Where this specification disagrees with a handout, the handout wins.
 Materials that do not appear in a handout are not part of the current
 canon.
 
+Sourcing notes confirmed by the user:
+
+-   **Wood (branches):** There is no component recipe. Branches are
+    found around the world, so wood lore should explain where and how
+    branches are gathered rather than how they are processed into a
+    component.
+-   **Cloth, wool and felt:** `crafting-recipes.md` has component and item
+    recipes, but cloth materials are still to be decided. Do not create
+    or list cloth materials unless the user asks.
+
 ------------------------------------------------------------------------
 
 ## 2. Core Principles

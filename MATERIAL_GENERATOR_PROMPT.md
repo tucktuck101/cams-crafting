@@ -76,6 +76,10 @@ For each material:
    | Legendary | 5000 GP | 3000 GP |
 
    **Leathers:** the handout has no modifiers or prices yet, and the rules say not to invent them. Leave the Difficulty Modifier and Gold Cost/Leather cells **blank** in the row. If the user wants suggestions, give them in the design notes, clearly marked as proposals for approval.
+
+   **Woods:** there is no recipe for making branches; they are found around the world. Wood lore should describe where the trees grow and how branches are gathered, and a wood's difficulty modifier reflects how hard it is to harvest and work.
+
+   **Cloth, wool and felt** materials are still to be decided. Do not design them unless the user explicitly asks.
 6. **Design the mechanics** for each form the kind uses (section 5). Match power to rarity:
    - Uncommon: one strong defining property, or two closely related minor ones.
    - Rare and above: more depth and more abilities are allowed; Legendary may be campaign-defining.
