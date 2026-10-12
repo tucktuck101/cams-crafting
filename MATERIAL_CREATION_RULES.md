@@ -60,7 +60,7 @@ This specification draws on:
 4.  **Current and previously edited writing-block text surfaced in
     context**, including material entries for Asterwood,
     Chronocalcite/Tempus Steel, Lifewood, Elderbeast Hide, Dragonfire
-    Leather, Spellthread, Darkwood, Ironwood, and others.
+    Leather, Darkwood, Ironwood, and others.
 5.  **Prior discussion of Kibbles' Crafting Guide / Compendium of Craft
     and Creation**, which established the comparison point that crafting
     modifiers should reflect the difficulty of processing/working a
@@ -90,6 +90,21 @@ personal information is excluded.
 -   **Unknown:** Evidence is incomplete or conflicting; do not invent a
     definitive answer.
 
+### 1.6 Authoritative handouts
+
+The handout files in this repository are the current authoritative
+canon for material names, rarities, difficulty modifiers, gold costs,
+lore, and mechanics:
+
+-   `Hides-and-leather.md`
+-   `ores-and-ingots.md`
+-   `woods-and-branches.md`
+-   `material-rarity-preface.md`
+
+Where this specification disagrees with a handout, the handout wins.
+Materials that do not appear in a handout are not part of the current
+canon.
+
 ------------------------------------------------------------------------
 
 ## 2. Core Principles
@@ -103,8 +118,8 @@ mechanical properties should express that identity.
 
 Examples: - Darkwood is unusually light and strong. - Ironwood remains
 wood for relevant magical interactions while having metal-like strength
-and fire resistance. - Shadowsilk improves hiding in dim light or
-darkness. - Spellthread interacts with spellcasting. -
+and fire resistance. - Shadowhide improves hiding in dim light or
+darkness. -
 Chronocalcite/Tempus Steel manipulates time. - Asterwood channels
 constellation-themed powers.
 
@@ -203,11 +218,8 @@ design guidance that may be overridden by a direct user instruction.
     describe the versions separately.
 -   **Priority:** Mandatory.
 -   **Dependencies:** RULE-002, RULE-023.
--   **Source evidence:** Recent user correction: Radiatite, Chromatite,
-    and Nanom are Very Rare; Fireglass and Skysteel are Uncommon;
-    Angelforged Leather, Gravemantle, and Abyssal Hide are Rare;
-    Deepwater Hide is not current and is replaced by Tidehide, an
-    Uncommon leather.
+-   **Source evidence:** The user designated the repository handouts
+    (Section 1.6) as the current authoritative canon.
 -   **Confidence:** High.
 -   **Example:** Classify Fireglass as Uncommon, not Rare.
 
@@ -229,26 +241,23 @@ design guidance that may be overridden by a direct user instruction.
 
 #### 3.1 Current rarity catalogue
 
-**Uncommon** - Darkwood (Zalantar) - Ironwood - Mithril - Adamantine -
-Black Iron - Fireglass - Skysteel - Spellthread - Silverfelt -
-Shadowsilk - Tidehide
+Derived from the authoritative handouts (Section 1.6).
 
-**Rare** - Moonroot - Stormwood - Worldroot - Phoenix Ashwood - Covolt -
-Frostfell Alloy - Gloomsteel - Glintsteel - Nimbusium - Mizzium -
-Angelforged Leather - Gravemantle - Abyssal Hide - Shadowhide -
-Voidleather
+**Uncommon** - Darkwood (Zalantar) - Ironwood - Cryptomeria - Mithril -
+Adamantine - Black Iron - Shadowhide - Skysteel - Fireglass - Tidehide
 
-**Very Rare** - Radiatite - Chromatite - Nanom - Starlight Leather -
-Soulweave - Dragonfire Leather - Formsteel - Aetherium
+**Rare** - Phoenix Ashwood - Moonroot - Worldroot - Stormwood - Mizzium -
+Covolt - Frostfell Alloy - Gloomsteel - Glintsteel - Nimbusium -
+Voidleather - Angelforged Leather - Gravemantle - Abyssal Hide
 
-**Legendary** - Lifewood - Asterwood - Chronocalcite / Tempus Steel -
-Meteoricite / Astral Iron - Fateskin - Elderbeast Hide
+**Very Rare** - Spirit Bark - Gaiawood - Sablewood - Chromatite -
+Radiatite - Nanom - Formsteel - Aetherium - Dragonfire Leather
 
-**Classification caveat:** The catalogue is reconstructed from
-accessible saved context and corrections. The most recent correction
-explicitly identifies several of these classifications, while some
-entries (notably Formsteel and Aetherium) are supported by saved memory.
-If a future user correction changes this catalogue, update it.
+**Legendary** - Lignum Vitae / Lifewood - Asterwood - Chronocalcite /
+Tempus Steel - Metoricite / Astral Iron - Fateskin
+
+**Rarity not stated in the handout:** Starlight Leather, Soulweave,
+Elderbeast Hide. Ask the user before assigning a tier.
 
 ### RULE-003 --- Apply the user's crafting modifier bands
 
@@ -358,8 +367,8 @@ If a future user correction changes this catalogue, update it.
     guideline; user later clarified that the proposed direction applies
     only to Uncommon grade materials.
 -   **Confidence:** High.
--   **Example:** Shadowsilk's Stealth benefit in dim light/darkness is a
-    focused Uncommon effect.
+-   **Example:** Shadowhide's Umbral Camouflage (advantage on Stealth in
+    dim light or darkness) is a focused Uncommon effect.
 
 ### RULE-008 --- Do not impose an unapproved property-selection rule
 
@@ -378,8 +387,8 @@ If a future user correction changes this catalogue, update it.
     and below, then said "Actually, never mind. We don't need to do
     this."
 -   **Confidence:** High.
--   **Example:** Do not automatically turn Spellthread's clothing
-    effects into a choose-one menu.
+-   **Example:** Do not automatically turn a material's armour effects
+    into a choose-one menu.
 
 ### RULE-009 --- Match effect power and complexity to rarity
 
@@ -539,11 +548,8 @@ If a future user correction changes this catalogue, update it.
 -   **Priority:** Mandatory when both forms are requested.
 -   **Dependencies:** RULE-015.
 -   **Source evidence:** User explicitly said "Separate cape and
-    clothing mechanics" for Spellthread.
+    clothing mechanics."
 -   **Confidence:** High.
--   **Example:** Spellthread clothing focuses on spell range,
-    concentration, and a limited spellcasting step; the proposed cape
-    uses spell-attack defence and spell-triggered aerial movement.
 
 ### RULE-017 --- Leather magic comes from processing, not a specific creature
 
@@ -691,8 +697,7 @@ If a future user correction changes this catalogue, update it.
 -   **Priority:** Mandatory.
 -   **Dependencies:** RULE-001, RULE-008.
 -   **Source evidence:** User cancelled the proposed property-selection
-    rule; later corrected material rarities and replaced Deepwater Hide
-    with Tidehide.
+    rule; later corrected material rarities.
 -   **Confidence:** High.
 
 ### RULE-025 --- Use current material names
@@ -702,7 +707,7 @@ If a future user correction changes this catalogue, update it.
 -   **Required behaviour:** Use current approved names. Known examples:
     Worldheart was renamed Gaiawood in one project context; Dreamwood
     was renamed Spiritbark; Starbloom was renamed Asterwood; Eclipsite
-    was renamed Sablewood; Deepwater Hide is replaced by Tidehide.
+    was renamed Sablewood.
 -   **Prohibited behaviour:** Presenting retired names as current
     entries.
 -   **Exceptions:** Mention old names only when explaining a historical
@@ -710,10 +715,7 @@ If a future user correction changes this catalogue, update it.
 -   **Priority:** Mandatory.
 -   **Dependencies:** RULE-001, RULE-024.
 -   **Source evidence:** Saved memories and explicit correction.
--   **Confidence:** High for the listed changes. Gaiawood and Sablewood
-    are not included in the current rarity catalogue above because their
-    latest classification needs verification against the most recent
-    project list; do not guess their tier from a prior draft.
+-   **Confidence:** High.
 
 ### RULE-026 --- Balance by actual play impact, not by number of bullet points
 
@@ -729,8 +731,8 @@ If a future user correction changes this catalogue, update it.
     effects.
 -   **Priority:** Preferred.
 -   **Dependencies:** RULE-009, RULE-010.
--   **Source evidence:** Balance audits of Spellthread, Silverfelt,
-    Stormwood, Soulweave, Asterwood, Lifewood, and Elderbeast Hide.
+-   **Source evidence:** Balance audits of Stormwood, Soulweave,
+    Asterwood, Lifewood, and Elderbeast Hide.
 -   **Confidence:** High.
 
 ### RULE-027 --- Check official and third-party precedents when requested
@@ -1055,8 +1057,7 @@ materials may use:
 -   Clarify what happens on a successful save.
 -   Avoid vague wording such as "cannot be moved" unless the scope is
     defined.
--   Avoid adding a spellcasting-focus property automatically; the user
-    has removed such a property from Spellthread in the past.
+-   Avoid adding a spellcasting-focus property automatically.
 -   Use tables for genuinely comparative options, not for every effect.
 
 ### 6.4 Rarity heading and crafting metadata
@@ -1140,8 +1141,6 @@ are provided when external sources were used.
     available.
 11. **Silent contradiction resolution:** Choosing between conflicting
     instructions without noting the conflict.
-12. **Incorrect material replacement:** Continuing to list Deepwater
-    Hide instead of Tidehide.
 
 ### 7.3 Acceptance criteria
 
@@ -1184,12 +1183,6 @@ them as the governing system.
                                                   minor properties;
                                                   applies only to
                                                   Uncommon.
-
-  Deepwater Hide          Appeared in a prior     Replaced by
-                          draft                   **Tidehide**, Uncommon
-                                                  leather. Do not list
-                                                  Deepwater Hide as
-                                                  current.
 
   Fireglass               Previously mislabelled  **Uncommon**.
                           Rare in an assistant    
@@ -1238,29 +1231,18 @@ them as the governing system.
 
 ### 8.3 Unresolved or potentially conflicting points
 
--   **Gaiawood and Sablewood:** They appear in prior context, but their
-    exact current rarity is not securely established by the most recent
-    visible classification. Verify before assigning them to a tier.
--   **Formsteel and Aetherium:** Saved memory explicitly records them as
-    Very Rare, but their complete latest mechanics are not reproduced in
-    this specification.
--   **Tidehide mechanics:** The current name and Uncommon rarity are
-    confirmed, but its complete latest mechanics/lore are not available
-    in the accessible summary.
--   **Silverfelt mechanics:** A proposal exists, but its balance status
-    may be provisional. The user asked to check Uncommon cloth balance;
-    no final revised Silverfelt mechanics are confirmed here.
--   **Spellthread cape:** The last displayed version includes Arcane
-    Deflection, Spellwind, and Arcane Mantle. The user approved
-    displaying the full Spellthread effects but has not explicitly
-    confirmed every cape mechanic as final.
--   **Modifier values:** The ranges are explicit; most individual
-    modifier assignments in previous assistant answers were proposals.
-    Unless the user explicitly accepted them, treat the per-material
-    values in Section 9 as provisional starting points, not immutable
-    canon.
--   **Fateskin mechanics:** Lore and authentication method are
-    preserved, but its final mechanical package is not fully available.
+-   **Leather crafting data:** `Hides-and-leather.md` has no difficulty
+    modifiers or gold costs. Do not invent them; ask the user.
+-   **Leather rarity gaps:** Starlight Leather, Soulweave, and Elderbeast
+    Hide have no rarity in the handout.
+-   **Nanom modifier:** The handout gives +5, below the Very Rare band
+    (+7 to +9). Ask whether the value or the band is correct.
+-   **Once-per-turn wording:** Several handout effects still use "once
+    per turn" or "up to 3 times per Long Rest" (e.g. Abyssal Power,
+    Emberstrike, Stored Strength), which conflicts with RULE-011. Treat
+    the handout wording as current unless the user asks for a revision.
+-   **Stormwood stun:** Flagged under RULE-010 as strong for Rare; the
+    handout still uses stun. Do not change it without instruction.
 -   **Asterwood, Lifewood, and Elderbeast Hide:** Current effects are
     intentionally powerful and have previously been flagged for possible
     balance review. Do not silently nerf them; ask whether the user
@@ -1290,17 +1272,15 @@ ELSE:
 **Input request:** "Create an Uncommon cloth that helps spellcasters."
 
 **Context/assumptions:** Cloth is for non-armour clothing and possibly a
-cape. Uncommon should have a focused identity. Spellthread already
-exists, so do not create a duplicate without a distinguishing concept.
+cape. Uncommon should have a focused identity. No cloth materials exist
+in the current canon yet.
 
 **Applicable rules:** RULE-007, RULE-013, RULE-015, RULE-016, RULE-018,
 RULE-021.
 
-**Decision process:** 1. Check the existing material list. 2. If the
-request is for Spellthread, use the latest current entry. 3. If it is a
-new material, choose a distinct spellcasting niche rather than repeating
-Spellthread's range/concentration/movement package. 4. Write lore
-showing a known, repeatable textile process. 5. Keep the Uncommon
+**Decision process:** 1. Check the existing material list for
+overlapping themes. 2. Choose a distinct spellcasting niche. 3. Write
+lore showing a known, repeatable textile process. 4. Keep the Uncommon
 mechanic focused.
 
 **Expected output:** A compact, sourcebook-ready entry with clearly
@@ -1384,157 +1364,56 @@ exact change applied and no accidental regression.
 
 ## 10. Known Materials and Modifier Working Register
 
-This section separates **confirmed rarity** from **provisional modifier
-recommendations**. The user has confirmed the modifier bands, but the
-individual values below were proposed by the assistant and are not all
-known to have been explicitly approved.
+Values below are copied from the authoritative handouts (Section 1.6).
+"—" means the handout does not give a value.
 
-  --------------------------------------------------------------------------------
-  Material         Current rarity       Proposed modifier Status / rationale
-  ---------------- ---------------- --------------------- ------------------------
-  Darkwood         Uncommon                            +3 Provisional; established
-  (Zalantar)                                              woodworking methods
+| Material | Rarity | Modifier | Gold cost |
+| --- | --- | --- | --- |
+| Darkwood (Zalantar) | Uncommon | +3 | 25 GP / branch |
+| Ironwood | Uncommon | +5 | 25 GP / branch |
+| Cryptomeria | Uncommon | +4 | 25 GP / branch |
+| Mithril | Uncommon | +5 | 30 GP / ingot |
+| Adamantine | Uncommon | +7 | 60 GP / ingot |
+| Black Iron | Uncommon | +2 | 40 GP / ingot |
+| Shadowhide | Uncommon | — | — |
+| Skysteel | Uncommon | — | — |
+| Fireglass | Uncommon | — | — |
+| Tidehide | Uncommon | — | — |
+| Phoenix Ashwood | Rare | +6 | 80 GP / branch |
+| Moonroot | Rare | +6 | 80 GP / branch |
+| Worldroot | Rare | +5 | 80 GP / branch |
+| Stormwood | Rare | +7 | 80 GP / branch |
+| Mizzium | Rare | +7 | 80 GP / ingot |
+| Covolt | Rare | +6 | 200 GP / ingot |
+| Frostfell Alloy | Rare | +6 | 200 GP / ingot |
+| Gloomsteel | Rare | +6 | 200 GP / ingot |
+| Glintsteel | Rare | +6 | 200 GP / ingot |
+| Nimbusium | Rare | +6 | 200 GP / ingot |
+| Voidleather | Rare | — | — |
+| Angelforged Leather | Rare | — | — |
+| Gravemantle | Rare | — | — |
+| Abyssal Hide | Rare | — | — |
+| Spirit Bark | Very Rare | +8 | 800 GP / branch |
+| Gaiawood | Very Rare | +8 | 800 GP / branch |
+| Sablewood | Very Rare | +9 | 800 GP / branch |
+| Chromatite | Very Rare | +7 | 1500 GP / ingot |
+| Radiatite | Very Rare | +8 | 1500 GP / ingot |
+| Nanom | Very Rare | +5 (below band) | 1500 GP / ingot |
+| Formsteel | Very Rare | +8 | 1500 GP / ingot |
+| Aetherium | Very Rare | +9 | 1800 GP / ingot |
+| Dragonfire Leather | Very Rare | — | — |
+| Lignum Vitae / Lifewood | Legendary | +10 | 3000 GP / branch |
+| Asterwood | Legendary | +10 | 3000 GP / branch |
+| Chronocalcite / Tempus Steel | Legendary | +10 | 5000 GP / ingot |
+| Metoricite / Astral Iron | Legendary | +10 | 5000 GP / ingot |
+| Fateskin | Legendary | — | — |
+| Starlight Leather | — | — | — |
+| Soulweave | — | — | — |
+| Elderbeast Hide | — | — | — |
 
-  Ironwood         Uncommon                            +4 Provisional; requires
-                                                          druidic transformation
-
-  Mithril          Uncommon                            +5 Provisional; careful
-                                                          refining/alloying
-
-  Adamantine       Uncommon                            +7 Provisional; demanding
-                                                          smelting/forging
-
-  Black Iron       Uncommon                            +6 Provisional; brittle
-                                                          volcanic alloy
-
-  Fireglass        Uncommon                            +4 Provisional; repeated
-                                                          heat/alchemical
-                                                          treatment
-
-  Skysteel         Uncommon                            +4 Provisional; meteoric
-                                                          iron and controlled wind
-                                                          treatment
-
-  Spellthread      Uncommon                            +3 Provisional; established
-                                                          arcane textile process
-
-  Silverfelt       Uncommon                            +3 Provisional; repeatable
-                                                          silver/alchemical
-                                                          weaving
-
-  Shadowsilk       Uncommon                            +5 Provisional; magical
-                                                          darkness and
-                                                          shadow-infused weaving
-
-  Tidehide         Uncommon                            +4 Provisional; details
-                                                          need verification
-
-  Moonroot         Rare                                +5 Provisional; specialist
-                                                          but workable magical
-                                                          wood
-
-  Stormwood        Rare                                +6 Provisional; controlled
-                                                          storm exposure
-
-  Worldroot        Rare                                +6 Provisional; careful
-                                                          harvest of ancient
-                                                          living wood
-
-  Phoenix Ashwood  Rare                                +7 Provisional;
-                                                          regenerative
-                                                          phoenix-associated wood
-
-  Covolt           Rare                                +6 Provisional;
-                                                          storm-charged metal
-                                                          processing
-
-  Frostfell Alloy  Rare                                +6 Provisional; planar cold
-                                                          and alloying
-
-  Gloomsteel       Rare                                +6 Provisional;
-                                                          darkness/necrotic
-                                                          treatment
-
-  Glintsteel       Rare                                +6 Provisional;
-                                                          radiant-reactive
-                                                          processing
-
-  Nimbusium        Rare                                +5 Provisional;
-                                                          wind-reactive material
-
-  Mizzium          Rare                                +7 Provisional; combining
-                                                          difficult metal
-                                                          properties
-
-  Angelforged      Rare                                +6 Provisional;
-  Leather                                                 radiant/precious-metal
-                                                          treatment
-
-  Gravemantle      Rare                                +5 Provisional; necromantic
-                                                          preservation
-
-  Abyssal Hide     Rare                                +7 Provisional; hazardous
-                                                          Abyssal treatment
-
-  Shadowhide       Rare                                +5 Provisional; controlled
-                                                          magical darkness
-
-  Voidleather      Rare                                +7 Provisional; spatial
-                                                          stabilisation
-
-  Radiatite        Very Rare                           +8 Provisional; hazardous
-                                                          magical/radiological
-                                                          preparation
-
-  Chromatite       Very Rare                           +8 Provisional; unstable
-                                                          elemental material
-
-  Nanom            Very Rare                           +7 Provisional;
-                                                          shape-reactive magical
-                                                          material
-
-  Starlight        Very Rare                           +7 Provisional; celestial
-  Leather                                                 treatment
-
-  Soulweave        Very Rare                           +8 Provisional; life-force
-                                                          binding
-
-  Dragonfire       Very Rare                           +8 Provisional; draconic
-  Leather                                                 elemental treatment
-
-  Formsteel        Very Rare                      Unknown Rarity confirmed in
-                                                          memory; process and
-                                                          modifier need review
-
-  Aetherium        Very Rare                      Unknown Rarity confirmed in
-                                                          memory; process and
-                                                          modifier need review
-
-  Lifewood         Legendary                          +10 Provisional;
-                                                          extraordinary life magic
-
-  Asterwood        Legendary                          +11 Provisional; celestial
-                                                          origin and
-                                                          non-cultivable growth
-
-  Chronocalcite /  Legendary                          +12 Provisional; temporal
-  Tempus Steel                                            material and lost
-                                                          forging knowledge
-
-  Meteoricite /    Legendary                          +11 Provisional;
-  Astral Iron                                             extraplanar/spatial
-                                                          origin
-
-  Fateskin         Legendary                          +12 Provisional; lost
-                                                          probability/fate ritual
-
-  Elderbeast Hide  Legendary                          +11 Provisional; lost Rite
-                                                          of First Hunt
-  --------------------------------------------------------------------------------
-
-**Important:** These proposed numbers are a working register, not proof
-that the user has approved every individual modifier. Confirm or revise
-them when the crafting-modifier audit resumes.
+Gold costs are not governed by an explicit rule; the handouts follow
+the pattern Uncommon 25–60 GP, Rare 80–200 GP, Very Rare 800–1800 GP,
+Legendary 3000–5000 GP.
 
 ------------------------------------------------------------------------
 
@@ -1547,45 +1426,28 @@ them when the crafting-modifier audit resumes.
     refers to Kibbles' Crafting Guide / Compendium of Craft and Creation
     and later Modular Crafting material. The user's chosen modifier
     bands are custom and take precedence.
-3.  **Per-material modifier approval:** The modifier ranges are
-    explicit; many per-material values remain recommendations rather
-    than confirmed decisions.
-4.  **Gaiawood and Sablewood:** Names appear in prior material history,
-    but their current rarity and complete mechanics need verification
-    before inclusion in the formal rarity register.
-5.  **Tidehide:** Current name and Uncommon classification are
-    confirmed; full current lore and mechanics need retrieval.
-6.  **Formsteel and Aetherium:** Very Rare status is recorded; latest
-    complete lore/mechanics are not included in the accessible material
-    summary.
-7.  **Current final mechanics for some cloth materials:** Spellthread
-    has a displayed current entry. Silverfelt's proposed effects were
-    flagged as potentially too broad; no final nerfed version is
-    confirmed. Shadowsilk's original stealth identity is recorded.
-8.  **Fateskin mechanics:** The lore and authentication method are
-    recorded, but a full final mechanical package is not available here.
-9.  **Balance target for Legendary:** The user allows extraordinary
+3.  **Leather crafting data:** Difficulty modifiers, gold costs, and
+    three rarities are missing from `Hides-and-leather.md`.
+4.  **Balance target for Legendary:** The user allows extraordinary
     effects; the precise intended upper bound for artifact-level effects
     is not formally specified.
-10. **Stacking rules:** It is not established whether two materials'
+5.  **Stacking rules:** It is not established whether two materials'
     effects can be combined in one item, or how that interacts with
     magical enhancement bonuses. Ask rather than assume when relevant.
-11. **Crafting check formula:** The user's modifier bands are known, but
+6.  **Crafting check formula:** The user's modifier bands are known, but
     this document does not define how the modifier combines with DCs,
     proficiency, tools, or other elements of Kibbles' system. Do not
     invent a replacement formula.
-12. **Use limits:** The PB-times-per-Long-Rest preference applies to
+7.  **Use limits:** The PB-times-per-Long-Rest preference applies to
     effects worded "once per turn," but specific entries may have
     explicit current exceptions. Inspect the current approved entry
     before changing wording.
 
 ### Recommended next step
 
-Before using the register as a final crafting reference, confirm the
-proposed modifier for each material and retrieve the latest full text
-for the unresolved materials. Keep the distinction between **confirmed
-user rules**, **current material canon**, and **assistant-proposed
-modifier values** visible throughout that review.
+Before using the register as a final crafting reference, fill in the
+missing leather values and resolve the open points in Section 8.3 with
+the user.
 
 ------------------------------------------------------------------------
 
