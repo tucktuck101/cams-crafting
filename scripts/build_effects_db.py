@@ -39,6 +39,18 @@ Design notes / known heuristics (see also the final build report):
   fields (category/subtype/trigger/magnitude/uses), never sliced from the
   source text, so it can never be a verbatim copy of someone else's
   homebrew prose.
+* Handout materials (ores-and-ingots.md / Hides-and-leather.md /
+  woods-and-branches.md) are NOT run through the prose-regex heuristics
+  described below for their atoms. Free-running regex extraction proved
+  unreliable on this hand-written, flavour-heavy prose (missed abilities
+  entirely, mis-tagged triggers/categories, even inverted polarity on a
+  few clauses -- e.g. "no longer imposes disadvantage" being read as
+  "imposes disadvantage"). Instead every one of the 82
+  (handout, material, form) combinations has a hand-written atom list in
+  HANDOUT_ATOM_OVERRIDES, checked against the handout text form by form.
+  prose_atoms() remains a fallback for any handout form that has no
+  override entry (e.g. if a new material is added later), so it is still
+  covered by the same heuristics/known-gaps caveats as homebrew items.
 * Known gaps (heuristic, may misclassify or under/over-count -- see the
   printed build report for the live numbers):
     - `property` (weapon property) codes are not expanded into effects.
@@ -1248,6 +1260,427 @@ def parse_markdown_table_rows(text):
     return rows
 
 
+HANDOUT_ATOM_OVERRIDES = {
+    # Hand-curated, checked against the handout prose line by line (see
+    # docstring note above parse_handouts()). Keyed by (handout, material name,
+    # form); every one of the 82 forms has an explicit entry here so the
+    # regex-driven prose_atoms() fallback below is never needed for current
+    # handout content (it remains as a safety net for future additions).
+    # --- ores-and-ingots -------------------------------------------------------
+    ('ores-and-ingots', 'Mithril', 'weapon'): [
+        Atom('utility', 'loses heavy property (weapon)', 'passive', None, 'always'),
+        Atom('utility', 'gains light property if not already heavy (weapon)', 'passive', None, 'always'),
+    ],
+    ('ores-and-ingots', 'Mithril', 'armour'): [
+        Atom('utility', 'no Stealth disadvantage (armour)', 'passive', None, 'always'),
+        Atom('utility', 'no Strength requirement (armour)', 'passive', None, 'always'),
+    ],
+    ('ores-and-ingots', 'Adamantine', 'weapon'): [
+        Atom('equipment damage', 'nonmagical weapon/armour/shield', 'on crit', '-2 per hit, max -4 then destroyed', 'at will'),
+    ],
+    ('ores-and-ingots', 'Adamantine', 'armour'): [
+        Atom('immunity', 'critical hits', 'passive', None, 'always'),
+    ],
+    ('ores-and-ingots', 'Black Iron', 'weapon'): [
+        Atom('damage rider', 'fire', 'on hit', '1d6', 'at will'),
+        Atom('damage rider', 'slashing', 'on crit', '1d6', 'at will'),
+    ],
+    ('ores-and-ingots', 'Black Iron', 'armour'): [
+        Atom('resistance', 'fire', 'passive', None, 'always'),
+        Atom('reaction defence', 'damage reduction', 'reaction', '1d8 + proficiency bonus (bludgeoning only)', '1/long rest'),
+    ],
+    ('ores-and-ingots', 'Mizzium', 'weapon'): [
+        Atom('utility', 'loses heavy property (weapon)', 'passive', None, 'always'),
+        Atom('utility', 'gains light property if not already heavy (weapon)', 'passive', None, 'always'),
+        Atom('equipment damage', 'nonmagical weapon/armour/shield', 'on crit', '-2 per hit, max -4 then destroyed', 'at will'),
+    ],
+    ('ores-and-ingots', 'Mizzium', 'armour'): [
+        Atom('utility', 'no Stealth disadvantage (armour)', 'passive', None, 'always'),
+        Atom('utility', 'no Strength requirement (armour)', 'passive', None, 'always'),
+        Atom('immunity', 'critical hits', 'passive', None, 'always'),
+        Atom('utility', 'evasion vs Strength/Constitution half-damage spells', 'passive', None, 'always'),
+    ],
+    ('ores-and-ingots', 'Covolt', 'weapon'): [
+        Atom('damage rider', 'lightning', 'on hit', '1d8', 'at will'),
+        Atom('area damage', 'lightning', 'action', '2d8', '1/short or long rest'),
+    ],
+    ('ores-and-ingots', 'Covolt', 'armour'): [
+        Atom('resistance', 'lightning', 'passive', None, 'always'),
+        Atom('reaction defence', 'redirect damage', 'reaction', 'half damage taken', '1/short or long rest'),
+    ],
+    ('ores-and-ingots', 'Frostfell Alloy', 'weapon'): [
+        Atom('damage rider', 'cold', 'on hit', '1d8', 'at will'),
+        Atom('area damage', 'cold', 'action', '2d8', '1/short or long rest'),
+    ],
+    ('ores-and-ingots', 'Frostfell Alloy', 'armour'): [
+        Atom('resistance', 'cold', 'passive', None, 'always'),
+        Atom('reaction defence', 'slow attacker', 'reaction', 'speed -15 ft until end of its next turn', '1/short or long rest'),
+    ],
+    ('ores-and-ingots', 'Gloomsteel', 'weapon'): [
+        Atom('damage rider', 'necrotic', 'on hit', '1d8', 'at will'),
+        Atom('area damage', 'necrotic', 'action', '2d8', '1/short or long rest'),
+        Atom('condition inflicted', 'blinded', 'on save fail', 'until start of next turn', '1/short or long rest'),
+    ],
+    ('ores-and-ingots', 'Gloomsteel', 'armour'): [
+        Atom('resistance', 'necrotic', 'passive', None, 'always'),
+        Atom('advantage', 'Stealth checks', 'passive', None, 'always'),
+        Atom('reaction defence', 'turn attack into a miss', 'reaction', 'imposes disadvantage on the attack', '1/short or long rest'),
+    ],
+    ('ores-and-ingots', 'Glintsteel', 'weapon'): [
+        Atom('damage rider', 'radiant', 'on hit', '1d8', 'at will'),
+        Atom('area damage', 'radiant', 'action', '2d8', '1/short or long rest'),
+        Atom('condition inflicted', 'blinded', 'on save fail', 'until start of next turn', '1/short or long rest'),
+    ],
+    ('ores-and-ingots', 'Glintsteel', 'armour'): [
+        Atom('resistance', 'radiant', 'passive', None, 'always'),
+        Atom('reaction defence', 'blind attacker', 'reaction', 'until start of its next turn', '1/short or long rest'),
+    ],
+    ('ores-and-ingots', 'Nimbusium', 'weapon'): [
+        Atom('damage rider', 'slashing', 'on hit', '1d8', 'at will'),
+        Atom('area damage', 'bludgeoning', 'action', '2d8', '1/short or long rest'),
+    ],
+    ('ores-and-ingots', 'Nimbusium', 'armour'): [
+        Atom('movement speed', 'walk', 'passive', '+10 ft', 'always'),
+        Atom('advantage', 'saving throws vs being pushed or knocked prone', 'passive', None, 'always'),
+        Atom('reaction defence', 'push away attacker', 'reaction', '10 ft', '1/short or long rest'),
+    ],
+    ('ores-and-ingots', 'Chromatite', 'weapon'): [
+        Atom('damage rider', 'choice (acid/cold/fire/lightning/thunder/radiant/necrotic)', 'on hit', '2d8', 'at will'),
+        Atom('area damage', 'choice (acid/cold/fire/lightning/thunder/radiant/necrotic)', 'bonus action', '6d8', 'proficiency bonus'),
+    ],
+    ('ores-and-ingots', 'Chromatite', 'armour'): [
+        Atom('reaction defence', 'resist damage', 'reaction', 'proficiency bonus rounds', 'at will'),
+        Atom('area damage', 'choice (acid/cold/fire/lightning/thunder/radiant/necrotic)', 'bonus action', '6d8', 'at will'),
+    ],
+    ('ores-and-ingots', 'Radiatite', 'weapon'): [
+        Atom('damage rider', 'necrotic', 'on hit', '2d8', 'at will'),
+        Atom('area damage', 'necrotic', 'action', '3d8', '1/short or long rest'),
+    ],
+    ('ores-and-ingots', 'Radiatite', 'armour'): [
+        Atom('resistance', 'necrotic', 'passive', None, 'always'),
+        Atom('advantage', 'saving throws vs effects that reduce hit point maximum', 'passive', None, 'always'),
+        Atom('area damage', 'necrotic', 'bonus action', '2d6/turn for proficiency bonus rounds', '1/short or long rest'),
+    ],
+    ('ores-and-ingots', 'Nanom', 'weapon'): [
+        Atom('damage rider', 'psychic', 'on hit', '1d8', 'at will'),
+        Atom('utility', 'reshape into another proficient weapon (bonus action)', 'bonus action', None, 'always'),
+        Atom('damage rider', 'psychic (adaptive strike)', 'on hit', '2d6', '1/short or long rest'),
+    ],
+    ('ores-and-ingots', 'Nanom', 'armour'): [
+        Atom('reaction defence', 'turn attack into a miss', 'reaction', '+3 AC', 'at will'),
+        Atom('reaction defence', 'resist damage', 'bonus action', 'next hit from a chosen creature within 30 ft', '1/short or long rest'),
+    ],
+    ('ores-and-ingots', 'Formsteel', 'weapon'): [
+        Atom('damage rider', 'force', 'on hit', '2d8', 'at will'),
+        Atom('utility', 'weapon returns to hand (bonus action, within 60 ft)', 'bonus action', None, 'at will'),
+        Atom('utility', 'reroll a missed attack', 'on attack roll', None, '1/round, proficiency bonus total'),
+    ],
+    ('ores-and-ingots', 'Formsteel', 'armour'): [
+        Atom('resistance', 'bludgeoning', 'passive', 'nonmagical', 'always'),
+        Atom('resistance', 'slashing', 'passive', 'nonmagical', 'always'),
+        Atom('resistance', 'piercing', 'passive', 'nonmagical', 'always'),
+        Atom('reaction defence', 'damage reduction', 'reaction', '2d8 + proficiency bonus', '1/short or long rest'),
+    ],
+    ('ores-and-ingots', 'Aetherium', 'weapon'): [
+        Atom('damage rider', 'force', 'on hit', '2d8', 'at will'),
+        Atom('area damage', 'force', 'bonus action', '3d6', 'proficiency bonus/long rest'),
+    ],
+    ('ores-and-ingots', 'Aetherium', 'armour'): [
+        Atom('resistance', 'force', 'passive', None, 'always'),
+        Atom('reaction defence', 'absorb damage', 'reaction', "resistance to that spell's damage for proficiency bonus rounds", 'at will'),
+        Atom('reaction defence', 'negate effect', 'reaction', '4d8 + proficiency bonus force damage to caster, spell fails', 'at will'),
+    ],
+    ('ores-and-ingots', 'Chronocalcite/Tempus Steel', 'weapon'): [
+        Atom('damage rider', 'force', 'on hit', '3d10', 'at will'),
+        Atom('damage rider', 'force (temporal overload, on failed save)', 'on hit', '6d10', 'proficiency bonus/short or long rest'),
+    ],
+    ('ores-and-ingots', 'Chronocalcite/Tempus Steel', 'armour'): [
+        Atom('teleport', None, 'reaction', 'to space occupied at start of previous turn', 'proficiency bonus/long rest'),
+        Atom('healing', None, 'reaction', 'half hit point maximum', 'proficiency bonus/long rest'),
+        Atom('spell granted', 'haste', 'reaction', 'no concentration required, 1 minute', 'proficiency bonus/long rest'),
+        Atom('utility', 'force a creature to reroll a check, attack roll, or save (bonus action)', 'bonus action', None, 'proficiency bonus/long rest'),
+    ],
+    ('ores-and-ingots', 'Metoricite/Astral Iron', 'weapon'): [
+        Atom('damage rider', 'psychic', 'on hit', '3d10', 'at will'),
+        Atom('utility', 'attack ignores nonmagical cover and objects/creatures in the way', 'on attack roll', None, 'proficiency bonus/short or long rest'),
+    ],
+    ('ores-and-ingots', 'Metoricite/Astral Iron', 'armour'): [
+        Atom('teleport', None, 'reaction', 'reappear within 60 ft', 'proficiency bonus/long rest'),
+        Atom('healing', None, 'reaction', 'half hit point maximum', 'proficiency bonus/long rest'),
+        Atom('reaction defence', 'avoid damage', 'reaction', 'untargetable until start of next turn', 'proficiency bonus/long rest'),
+    ],
+    # --- hides-and-leather -----------------------------------------------------
+    ('hides-and-leather', 'Shadowhide', 'light armour'): [
+        Atom('advantage', 'Stealth checks', 'passive', None, 'always'),
+        Atom('utility', 'Hide action while only lightly obscured (bonus action)', 'bonus action', 'until start of next turn', '1/long rest'),
+    ],
+    ('hides-and-leather', 'Shadowhide', 'medium armour'): [
+        Atom('advantage', 'Stealth checks', 'passive', None, 'always'),
+        Atom('reaction defence', 'turn attack into a miss', 'reaction', 'imposes disadvantage on the attack', '1/long rest'),
+    ],
+    ('hides-and-leather', 'Skysteel', 'light armour'): [
+        Atom('movement speed', 'walk', 'passive', '+10 ft', 'always'),
+        Atom('advantage', 'saving throws vs being knocked prone or forcibly moved', 'passive', None, 'always'),
+        Atom('utility', 'reduce falling damage by 20', 'passive', None, 'always'),
+    ],
+    ('hides-and-leather', 'Skysteel', 'medium armour'): [
+        Atom('movement speed', 'walk', 'passive', '+5 ft', 'always'),
+        Atom('advantage', 'saving throws vs being knocked prone or forcibly moved', 'passive', None, 'always'),
+        Atom('reaction defence', 'avoid damage', 'reaction', 'negates falling damage, glide 10 ft per 30 ft fallen', 'at will'),
+    ],
+    ('hides-and-leather', 'Fireglass', 'light armour'): [
+        Atom('resistance', 'fire', 'passive', None, 'always'),
+        Atom('reaction defence', 'damage reduction', 'reaction', '1d8 + proficiency bonus', '1/long rest'),
+    ],
+    ('hides-and-leather', 'Fireglass', 'medium armour'): [
+        Atom('resistance', 'fire', 'passive', None, 'always'),
+        Atom('reaction defence', 'retaliate', 'reaction', '2d6 fire damage to attacker', '1/long rest'),
+    ],
+    ('hides-and-leather', 'Tidehide', 'light armour'): [
+        Atom('movement speed', 'swim', 'passive', '= walking speed', 'always'),
+        Atom('advantage', 'ability checks', 'passive', None, 'always'),
+        Atom('utility', 'stand from prone and move 10 ft without provoking (reaction)', 'reaction', None, '1/long rest'),
+    ],
+    ('hides-and-leather', 'Tidehide', 'medium armour'): [
+        Atom('movement speed', 'swim', 'passive', '= walking speed', 'always'),
+        Atom('advantage', 'ability checks', 'passive', None, 'always'),
+        Atom('reaction defence', 'push away attacker', 'reaction', 'DC 15 Strength save or pushed 15 ft', '1/long rest'),
+    ],
+    ('hides-and-leather', 'Voidleather', 'light armour'): [
+        Atom('utility', 'take the Disengage action as a bonus action', 'bonus action', None, 'always'),
+        Atom('teleport', None, 'bonus action', '30 ft', '3/long rest'),
+    ],
+    ('hides-and-leather', 'Voidleather', 'medium armour'): [
+        Atom('utility', 'take the Disengage action as a bonus action', 'bonus action', None, 'always'),
+        Atom('teleport', None, 'reaction', '30 ft', '3/long rest'),
+        Atom('reaction defence', 'avoid damage', 'reaction', 'triggering attack automatically misses', '3/long rest'),
+    ],
+    ('hides-and-leather', 'Angelforged Leather', 'light armour'): [
+        Atom('resistance', 'radiant', 'passive', None, 'always'),
+        Atom('advantage', 'saving throws vs being blinded or frightened', 'passive', None, 'always'),
+        Atom('reaction defence', 'damage reduction', 'reaction', '3d8 + proficiency bonus (overflow grants temp HP)', '3/long rest'),
+    ],
+    ('hides-and-leather', 'Angelforged Leather', 'medium armour'): [
+        Atom('resistance', 'radiant', 'passive', None, 'always'),
+        Atom('advantage', 'saving throws vs being blinded or frightened', 'passive', None, 'always'),
+        Atom('reaction defence', 'resist damage', 'reaction', None, '3/long rest'),
+    ],
+    ('hides-and-leather', 'Gravemantle', 'light armour'): [
+        Atom('advantage', 'saving throws vs exhaustion, poison, and disease', 'passive', None, 'always'),
+        Atom('utility', 'sustenance-free', 'passive', None, 'always'),
+        Atom('reaction defence', 'prevent effect', 'reaction', 'drop to 1 HP instead of 0', '3/long rest'),
+        Atom('temp hp', None, 'reaction', '2d8 + Constitution modifier', '3/long rest'),
+    ],
+    ('hides-and-leather', 'Gravemantle', 'medium armour'): [
+        Atom('advantage', 'saving throws vs exhaustion, poison, and disease', 'passive', None, 'always'),
+        Atom('utility', 'sustenance-free', 'passive', None, 'always'),
+        Atom('reaction defence', 'prevent effect', 'reaction', 'remain at 1 HP instead of 0', '3/long rest'),
+        Atom('resistance', 'all', 'reaction', 'until end of next turn', '3/long rest'),
+    ],
+    ('hides-and-leather', 'Abyssal Hide', 'light armour'): [
+        Atom('damage rider', 'necrotic', 'on hit', '1d8', 'once per turn'),
+        Atom('teleport', None, 'bonus action', '30 ft', '3/long rest'),
+        Atom('area damage', 'necrotic', 'bonus action', '3d8', '3/long rest'),
+        Atom('utility', "movement doesn't provoke opportunity attacks until next turn", 'bonus action', None, '3/long rest'),
+    ],
+    ('hides-and-leather', 'Abyssal Hide', 'medium armour'): [
+        Atom('damage rider', 'necrotic', 'on hit', '1d8', 'once per turn'),
+        Atom('area damage', 'necrotic', 'action', '6d8', '1/long rest'),
+    ],
+    ('hides-and-leather', 'Dragonfire Leather', 'light armour'): [
+        Atom('resistance', 'choice (acid/cold/fire/poison/thunder/lightning/radiant/force/psychic)', 'passive', 'chosen at long rest', 'always'),
+        Atom('teleport', None, 'bonus action', '30 ft', '3/long rest'),
+        Atom('area damage', 'choice (matches Draconic Resistance type)', 'bonus action', '4d8', '3/long rest'),
+    ],
+    ('hides-and-leather', 'Dragonfire Leather', 'medium armour'): [
+        Atom('resistance', 'choice (acid/cold/fire/poison/thunder/lightning/radiant/force/psychic)', 'passive', 'chosen at long rest', 'always'),
+        Atom('reaction defence', 'retaliate', 'reaction', '4d8 damage of chosen type to attacker', 'at will'),
+        Atom('area damage', 'choice (matches Draconic Resistance type)', 'action', '8d8', '1/long rest'),
+    ],
+    ('hides-and-leather', 'Starlight Leather', 'light armour'): [
+        Atom('light/vision', 'see invisible creatures', 'passive', '30 ft', 'always'),
+        Atom('light/vision', 'emits light', 'bonus action', '10 ft radius, suppresses invisibility in area', '1/short or long rest'),
+    ],
+    ('hides-and-leather', 'Starlight Leather', 'medium armour'): [
+        Atom('light/vision', 'see invisible creatures', 'passive', '30 ft', 'always'),
+        Atom('reaction defence', 'damage reduction', 'reaction', '3d10 + proficiency bonus', '3/long rest'),
+    ],
+    ('hides-and-leather', 'Soulweave', 'light armour'): [
+        Atom('advantage', 'saving throws vs effects that reduce hit point maximum or cause exhaustion', 'passive', None, 'always'),
+        Atom('reaction defence', 'halve damage', 'reaction', "redirect half of an ally's damage to yourself", '3/long rest'),
+        Atom('healing', None, 'reaction', '3d8 + proficiency bonus', '3/long rest'),
+    ],
+    ('hides-and-leather', 'Soulweave', 'medium armour'): [
+        Atom('advantage', 'saving throws vs effects that reduce hit point maximum or cause exhaustion', 'passive', None, 'always'),
+        Atom('reaction defence', 'prevent effect', 'reaction', 'target drops to 1 HP instead of 0', '3/long rest'),
+        Atom('temp hp', None, 'reaction', '3d10 + proficiency bonus', '3/long rest'),
+    ],
+    ('hides-and-leather', 'Fateskin', 'light armour'): [
+        Atom('advantage', 'initiative rolls', 'passive', None, 'always'),
+        Atom('utility', 'cannot be surprised', 'passive', None, 'always'),
+        Atom('utility', 'reroll an attack roll, ability check, or saving throw (self or ally within 30 ft)', 'reaction', None, '3/long rest'),
+        Atom('reaction defence', 'negate effect', 'reaction', 'treat the triggering attack or effect as though it never happened', '1/long rest'),
+        Atom('utility', 'self-invisibility', 'reaction', 'until end of current turn, also immune to damage, move half speed without provoking', '1/long rest'),
+        Atom('utility', 'replace a d20 roll with a pre-rolled result (self or ally within 60 ft)', 'reaction', '4 pre-rolled d20s recorded at long rest', '4/long rest'),
+    ],
+    ('hides-and-leather', 'Fateskin', 'medium armour'): [
+        Atom('advantage', 'initiative rolls', 'passive', None, 'always'),
+        Atom('utility', 'cannot be surprised', 'passive', None, 'always'),
+        Atom('utility', 'reroll an attack roll, ability check, or saving throw (self or ally within 30 ft)', 'reaction', None, '3/long rest'),
+        Atom('utility', 'declare an attack roll, ability check, or saving throw a success or failure (self or ally within 60 ft)', 'reaction', None, '1/long rest'),
+        Atom('reaction defence', 'prevent effect', 'reaction', 'drop to 1 HP instead of 0, move half speed without provoking', '1/long rest'),
+    ],
+    ('hides-and-leather', 'Elderbeast Hide', 'light armour'): [
+        Atom('light/vision', 'darkvision', 'passive', '60 ft (or existing darkvision +60 ft)', 'always'),
+        Atom('advantage', 'Perception checks', 'passive', None, 'always'),
+        Atom('utility', 'choose one Primal Adaptation at long rest (Predator/Thick Hide/Apex/Feral Mind/Keen Senses/Adaptive Physiology)', 'passive', None, 'resets at long rest'),
+        Atom('advantage', 'initiative rolls', 'passive', 'Predator adaptation: +1d12 weapon damage/turn vs a bloodied creature', '1/long rest (choice)'),
+        Atom('utility', 'hit point maximum increase', 'passive', 'Thick Hide adaptation: +2x proficiency bonus, advantage on Con saves', '1/long rest (choice)'),
+        Atom('advantage', 'Strength and Dexterity checks', 'passive', 'Apex adaptation: carrying capacity doubled', '1/long rest (choice)'),
+        Atom('condition immunity', 'frightened', 'passive', 'Feral Mind adaptation (while conscious): advantage on Wis/Cha saves', '1/long rest (choice)'),
+        Atom('utility', 'proficiency granted', 'passive', 'Keen Senses adaptation: one skill, plus advantage on Perception/Survival checks', '1/long rest (choice)'),
+        Atom('resistance', 'choice (acid/cold/fire/lightning/poison)', 'passive', 'Adaptive Physiology adaptation', '1/long rest (choice)'),
+        Atom('utility', 'reroll a failed Dexterity saving throw (reaction)', 'reaction', None, '3/long rest'),
+        Atom('advantage', 'Strength, Dexterity, and Constitution saving throws', 'bonus action', 'Elder Form, 1 minute', '1/long rest'),
+        Atom('condition immunity', 'frightened', 'bonus action', 'Elder Form, 1 minute', '1/long rest'),
+        Atom('condition immunity', 'poisoned', 'bonus action', 'Elder Form, 1 minute', '1/long rest'),
+        Atom('condition immunity', 'restrained', 'bonus action', 'Elder Form, 1 minute', '1/long rest'),
+    ],
+    ('hides-and-leather', 'Elderbeast Hide', 'medium armour'): [
+        Atom('utility', 'count as one size larger for carrying capacity/push/drag/lift', 'passive', None, 'always'),
+        Atom('advantage', 'saving throws vs being shoved or knocked prone', 'passive', None, 'always'),
+        Atom('reaction defence', 'resist damage', 'reaction', 'acid/cold/fire/lightning/poison, until start of next turn', '3/long rest'),
+        Atom('area damage', 'bludgeoning', 'action', '4d10', '3/long rest'),
+        Atom('condition inflicted', 'prone', 'on save fail', 'Predatory Assault charge', '3/long rest'),
+        Atom('resistance', 'bludgeoning', 'bonus action', 'Primal Transformation, 1 minute', '1/long rest'),
+        Atom('resistance', 'piercing', 'bonus action', 'Primal Transformation, 1 minute', '1/long rest'),
+        Atom('resistance', 'slashing', 'bonus action', 'Primal Transformation, 1 minute', '1/long rest'),
+        Atom('damage rider', "weapon's damage type", 'on hit', '1d12 (melee only)', 'Primal Transformation, 1 minute, 1/long rest'),
+        Atom('advantage', 'Strength checks and Strength saving throws', 'bonus action', 'Primal Transformation, 1 minute', '1/long rest'),
+        Atom('condition immunity', 'frightened', 'bonus action', 'Primal Transformation, 1 minute', '1/long rest'),
+        Atom('condition immunity', 'poisoned', 'bonus action', 'Primal Transformation, 1 minute', '1/long rest'),
+        Atom('condition immunity', 'restrained', 'bonus action', 'Primal Transformation, 1 minute', '1/long rest'),
+    ],
+    # --- woods-and-branches ----------------------------------------------------
+    ('woods-and-branches', 'Darkwood (Zalantar)', 'weapon'): [
+        Atom('utility', 'weighs half as much (weapon)', 'passive', None, 'always'),
+        Atom('utility', 'thrown weapon range +20 ft', 'passive', None, 'always'),
+        Atom('utility', 'ignore disadvantage at long range (bows/crossbows)', 'passive', None, 'always'),
+        Atom('utility', 'loses heavy property (weapon)', 'passive', None, 'always'),
+        Atom('utility', 'immune to damage from ordinary physical stress (weapon)', 'passive', None, 'always'),
+    ],
+    ('woods-and-branches', 'Darkwood (Zalantar)', 'casting focus'): [
+        Atom('utility', 'spellcasting focus', 'passive', None, 'always'),
+        Atom('utility', 'ranged spell attack range +30 ft', 'passive', None, 'always'),
+        Atom('saving throw bonus', 'first Constitution save to maintain concentration', 'passive', '+1', 'always'),
+        Atom('utility', 'weighs half as much (focus)', 'passive', None, 'always'),
+    ],
+    ('woods-and-branches', 'Ironwood', 'weapon'): [
+        Atom('immunity', 'spells/effects that target metal or iron', 'passive', None, 'always'),
+        Atom('immunity', 'nonmagical fire (weapon)', 'passive', None, 'always'),
+    ],
+    ('woods-and-branches', 'Ironwood', 'casting focus'): [
+        Atom('utility', 'spellcasting focus', 'passive', None, 'always'),
+        Atom('utility', 'immune to damage from ordinary physical force (focus)', 'passive', None, 'always'),
+        Atom('advantage', 'Constitution saving throws to maintain Concentration', 'passive', None, 'always'),
+        Atom('reaction defence', 'negate effect', 'reaction', 'resist forced movement up to 10 ft while concentrating', '1/long rest'),
+    ],
+    ('woods-and-branches', 'Cryptomeria', 'weapon'): [
+        Atom('damage bonus', 'melee/ranged weapon attack', 'on hit', '+proficiency bonus', 'once per turn, 3/long rest'),
+    ],
+    ('woods-and-branches', 'Cryptomeria', 'casting focus'): [
+        Atom('advantage', 'Constitution saving throws to maintain Concentration', 'passive', None, 'always'),
+    ],
+    ('woods-and-branches', 'Phoenix Ashwood', 'weapon'): [
+        Atom('damage rider', 'fire', 'on hit', '2d8', 'once per turn, 3/long rest'),
+    ],
+    ('woods-and-branches', 'Phoenix Ashwood', 'casting focus'): [
+        Atom('spell damage bonus', 'fire spells (reroll one damage die)', 'passive', None, '3/long rest'),
+    ],
+    ('woods-and-branches', 'Moonroot', 'weapon'): [
+        Atom('damage rider', 'psychic', 'on hit', '1d8', 'at will'),
+    ],
+    ('woods-and-branches', 'Moonroot', 'casting focus'): [
+        Atom('utility', 'spellcasting focus', 'passive', None, 'always'),
+        Atom('advantage', 'Constitution saving throws to maintain Concentration', 'passive', 'enchantment/illusion/divination spells only', 'always'),
+    ],
+    ('woods-and-branches', 'Worldroot', 'weapon'): [
+        Atom('damage rider', 'choice (bludgeoning/piercing/slashing)', 'on hit', '1d8', 'at will'),
+    ],
+    ('woods-and-branches', 'Worldroot', 'casting focus'): [
+        Atom('utility', 'spellcasting focus', 'passive', None, 'always'),
+        Atom('healing', None, 'passive', '+1d8 + half proficiency bonus to one healing-spell target', '3/long rest'),
+    ],
+    ('woods-and-branches', 'Stormwood', 'weapon'): [
+        Atom('damage rider', 'lightning', 'on hit', '1d8', 'at will'),
+        Atom('condition inflicted', 'stunned', 'on save fail', 'until end of its next turn', 'once per turn, 3/long rest'),
+    ],
+    ('woods-and-branches', 'Stormwood', 'casting focus'): [
+        Atom('spell damage bonus', 'lightning/thunder spells (one damage roll)', 'passive', '+proficiency bonus', 'once per turn, 3/long rest'),
+    ],
+    ('woods-and-branches', 'Spirit Bark', 'weapon'): [
+        Atom('damage rider', 'choice (fire/lightning/bludgeoning/cold, set by contracted elemental)', 'on hit', '2d8', 'once per turn, proficiency bonus/long rest'),
+        Atom('condition inflicted', 'prone', 'on save fail', 'Titan (Bludgeoning) contract only', 'once per turn, proficiency bonus/long rest'),
+    ],
+    ('woods-and-branches', 'Spirit Bark', 'casting focus'): [
+        Atom('reaction defence', 'retaliate', 'bonus action', '3d8 fire damage to attacker, DC 15 save for half, proficiency bonus rounds (Ifrit contract)', '1/long rest'),
+        Atom('movement speed', 'walk', 'bonus action', 'doubled, proficiency bonus rounds (Garuda contract)', '1/long rest'),
+        Atom('resistance', 'bludgeoning', 'bonus action', 'nonmagical, proficiency bonus rounds (Titan contract)', '1/long rest'),
+        Atom('resistance', 'piercing', 'bonus action', 'nonmagical, proficiency bonus rounds (Titan contract)', '1/long rest'),
+        Atom('resistance', 'slashing', 'bonus action', 'nonmagical, proficiency bonus rounds (Titan contract)', '1/long rest'),
+        Atom('advantage', 'saving throws vs magical effects', 'bonus action', 'proficiency bonus rounds (Shiva contract)', '1/long rest'),
+    ],
+    ('woods-and-branches', 'Gaiawood', 'weapon'): [
+        Atom('damage rider', 'force', 'on hit', '2d8', 'at will'),
+        Atom('damage rider', 'necrotic', 'on hit', '4d8', 'once per turn, proficiency bonus/long rest'),
+        Atom('healing', None, 'on hit', 'half the necrotic damage dealt (self or ally within 30 ft)', 'once per turn, proficiency bonus/long rest'),
+    ],
+    ('woods-and-branches', 'Gaiawood', 'casting focus'): [
+        Atom('reaction defence', 'prevent effect', 'passive', 'drop to 1 HP instead of 0 (automatic, no action cost)', '1/long rest'),
+        Atom('temp hp', None, 'passive', 'proficiency bonus + spellcasting ability modifier', '1/long rest'),
+    ],
+    ('woods-and-branches', 'Sablewood', 'weapon'): [
+        Atom('area damage', 'necrotic', 'on hit', '4d12', 'once per turn, proficiency bonus/short or long rest'),
+    ],
+    ('woods-and-branches', 'Sablewood', 'casting focus'): [
+        Atom('area damage', 'necrotic', 'action', '4d8', '1/long rest'),
+        Atom('condition inflicted', 'prone', 'on save fail', 'Event Horizon (30 ft zone)', '1/long rest'),
+        Atom('condition inflicted', 'restrained', 'on save fail', 'Dark Star (innermost 15 ft), until start of its next turn', '1/long rest'),
+    ],
+    ('woods-and-branches', 'Lignum Vitae/Lifewood', 'weapon'): [
+        Atom('healing', None, 'on hit', '2d12 + proficiency bonus', 'once per turn, 2x proficiency bonus/long rest'),
+        Atom('temp hp', None, 'on hit', '2d12 + proficiency bonus (if already at max HP)', 'once per turn, 2x proficiency bonus/long rest'),
+        Atom('spell granted', 'haste', 'on hit', 'no concentration required, lasts while temp HP remains', 'once per turn, 2x proficiency bonus/long rest'),
+    ],
+    ('woods-and-branches', 'Lignum Vitae/Lifewood', 'casting focus'): [
+        Atom('healing', None, 'action', '6d8 + 2x spellcasting modifier, up to 6 targets (Renewal)', 'proficiency bonus/long rest'),
+        Atom('temp hp', None, 'action', '2d12 + 2x spellcasting modifier, up to 6 targets (Vitality)', 'proficiency bonus/long rest'),
+        Atom('movement speed', 'walk', 'action', '+30 ft while Vitality temp HP lasts', 'proficiency bonus/long rest'),
+        Atom('AC bonus', None, 'action', '+2 while Vitality temp HP lasts', 'proficiency bonus/long rest'),
+        Atom('advantage', 'Dexterity and Constitution saving throws', 'action', 'while Vitality temp HP lasts', 'proficiency bonus/long rest'),
+        Atom('utility', 'additional action each turn (Attack/Dash/Disengage/Hide/Use an Object) while Vitality temp HP lasts', 'action', None, 'proficiency bonus/long rest'),
+        Atom('reaction defence', 'prevent effect', 'action', 'cannot be reduced below 1 HP while Vitality temp HP lasts', 'proficiency bonus/long rest'),
+    ],
+    ('woods-and-branches', 'Asterwood', 'weapon'): [
+        Atom('damage rider', 'radiant', 'on hit', '3d10', 'once per turn, proficiency bonus/long rest (Sagittarius)'),
+        Atom('temp hp', None, 'on hit', '2d8 + proficiency bonus (self or ally within 60 ft)', 'once per turn, proficiency bonus/long rest (Virgo)'),
+        Atom('condition inflicted', 'prone', 'on save fail', 'Taurus', 'once per turn, proficiency bonus/long rest'),
+        Atom('damage rider', 'necrotic', 'on hit', '4d8', 'once per turn, proficiency bonus/long rest (Scorpio)'),
+        Atom('teleport', None, 'on hit', '30 ft, immediately before or after the attack', 'once per turn, proficiency bonus/long rest (Aquarius)'),
+    ],
+    ('woods-and-branches', 'Asterwood', 'casting focus'): [
+        Atom('spell granted', 'produce a spectral bow and make a ranged spell attack (4d8 radiant, upcastable to 8d8)', 'bonus action', None, '1/long rest (Sagittarius)'),
+        Atom('temp hp', None, 'bonus action', '2x Hit Die roll + spellcasting modifier per creature per turn, up to spellcasting-mod targets within 60 ft', '1/long rest (Virgo)'),
+        Atom('advantage', 'Intelligence, Wisdom, and Charisma ability checks', 'bonus action', 'roll 2d20 and choose', '1/long rest (Libra)'),
+        Atom('resistance', 'bludgeoning', 'bonus action', 'self + 2 allies within 30 ft, 1 minute', '1/long rest (Taurus)'),
+        Atom('resistance', 'piercing', 'bonus action', 'self + 2 allies within 30 ft, 1 minute', '1/long rest (Taurus)'),
+        Atom('resistance', 'slashing', 'bonus action', 'self + 2 allies within 30 ft, 1 minute', '1/long rest (Taurus)'),
+        Atom('damage rider', 'necrotic', 'on hit', '4d8', 'once per turn, 1/long rest (Scorpio, spell damage only)'),
+        Atom('movement speed', 'fly', 'bonus action', '= 2x walking speed, 1 minute', '1/long rest (Aquarius)'),
+    ],
+}
+
+
 def parse_handouts():
     """Returns a list of material dicts:
     {handout, name, rarity, difficulty_modifier, gold_cost, gold_cost_gp,
@@ -1278,9 +1711,13 @@ def parse_handouts():
                     continue
                 name_m = re.match(r"^\*\*(.+?)\*\*", cell_text)
                 effect_name = name_m.group(1).strip() if name_m else None
-                atoms = prose_atoms(collapse_parenthetical_dice(cell_text))
-                atoms = [finalize_uses(a, None) for a in atoms]
-                atoms = dedup_atoms(atoms)
+                override = HANDOUT_ATOM_OVERRIDES.get((cfg["label"], name, form_name))
+                if override is not None:
+                    atoms = list(override)
+                else:
+                    atoms = prose_atoms(collapse_parenthetical_dice(cell_text))
+                    atoms = [finalize_uses(a, None) for a in atoms]
+                    atoms = dedup_atoms(atoms)
                 forms.append({
                     "form": form_name,
                     "effect_name": effect_name,

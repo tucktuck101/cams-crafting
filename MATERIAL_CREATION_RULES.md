@@ -100,6 +100,7 @@ lore, and mechanics:
 -   `ores-and-ingots.md`
 -   `woods-and-branches.md`
 -   `material-rarity-preface.md`
+-   `crafting-recipes.md` (component and item recipes, crafting DCs)
 
 Where this specification disagrees with a handout, the handout wins.
 Materials that do not appear in a handout are not part of the current
@@ -1431,13 +1432,16 @@ Legendary 3000–5000 GP.
 4.  **Balance target for Legendary:** The user allows extraordinary
     effects; the precise intended upper bound for artifact-level effects
     is not formally specified.
-5.  **Stacking rules:** It is not established whether two materials'
-    effects can be combined in one item, or how that interacts with
-    magical enhancement bonuses. Ask rather than assume when relevant.
-6.  **Crafting check formula:** The user's modifier bands are known, but
-    this document does not define how the modifier combines with DCs,
-    proficiency, tools, or other elements of Kibbles' system. Do not
-    invent a replacement formula.
+5.  **Stacking rules:** Settled by `crafting-recipes.md`: an item that
+    can be crafted from several materials (e.g. Studded Leather, Halberd)
+    benefits from only one Exotic Material, chosen at the time of
+    crafting. How material effects interact with magical enhancement
+    bonuses is still not established; ask rather than assume.
+6.  **Crafting check formula:** Settled by `crafting-recipes.md`: for
+    non-component items, the crafting DC is the item's base DC plus the
+    Exotic Material's DC modifier. Component recipes (ingots, leather,
+    bolts of cloth) have fixed DCs per grade. Proficiency, tools and
+    other Kibbles rules are not redefined here.
 7.  **Use limits:** The PB-times-per-Long-Rest preference applies to
     effects worded "once per turn," but specific entries may have
     explicit current exceptions. Inspect the current approved entry
