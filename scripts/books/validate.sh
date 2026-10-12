@@ -17,7 +17,9 @@
 #   scripts/books/validate.sh <file.json>
 #   scripts/books/validate.sh <directory>
 #
-# Validates every *.json file found (recursively, excluding index.json) and
+# Validates every *.json file found (recursively, excluding index.json and
+# *.provenance.json sidecars — the latter are free-form name->section-id maps, not
+# homebrew-schema-shaped, per the shared provenance-sidecar contract) and
 # prints a pass/fail line per file plus a final summary. Exits non-zero if
 # any file fails schema validation.
 set -euo pipefail
@@ -66,7 +68,7 @@ if [[ -f "$TARGET" ]]; then
 elif [[ -d "$TARGET" ]]; then
 	while IFS= read -r -d '' f; do
 		FILES+=("$f")
-	done < <(find "$TARGET" -type f -name '*.json' ! -name 'index.json' -print0 | sort -z)
+	done < <(find "$TARGET" -type f -name '*.json' ! -name 'index.json' ! -name '*.provenance.json' -print0 | sort -z)
 fi
 
 if [[ ${#FILES[@]} -eq 0 ]]; then
